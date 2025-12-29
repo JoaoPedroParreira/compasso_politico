@@ -88,7 +88,6 @@ const translations = {
         sameChoice: "Igual!",
         diffChoice: "Diferente!",
         chartTitle: "Bússola",
-        // Etiquetas para as barras de progresso / Labels for progress bars
         barLabels: {
             eco_sys: ["Socialismo", "Capitalismo"],
             eco_act: ["Economia Planeada", "Mercado Livre"],
@@ -111,12 +110,9 @@ const translations = {
             phil_soc: ["Coletivismo", "Individualismo"],
             phil_change: ["Paz", "Revolução"],
             phil_moral: ["Realismo", "Idealismo"],
-            phil_moral: ["Realismo", "Idealismo"],
             phil_ethics: ["Deontologia", "Consequencialismo"],
             rel_state: ["Laicismo", "Teocracia"],
             rel_pers: ["Secularismo", "Religiosidade"]
-            // Consequencialismo: Os fins justificam os meios. / Ends justify means.
-            // Deontologia: Regras morais absolutas. / Absolute moral rules.
         }
     },
     en: {
@@ -147,8 +143,7 @@ const translations = {
             phil_soc: ["Collectivism", "Individualism"],
             phil_change: ["Peace", "Revolution"],
             phil_moral: ["Realism", "Idealism"],
-            phil_moral: ["Realismo", "Idealismo"],
-            phil_ethics: ["Deannaology", "Consequentialism"],
+            phil_ethics: ["Deontology", "Consequentialism"],
             rel_state: ["Laicism", "Theocracy"],
             rel_pers: ["Secularism", "Religiosity"]
         }
@@ -332,66 +327,44 @@ function assignSecondaryEffects() {
     questionsData.forEach(q => {
         if (!q.langs) return;
 
-        // Obter textos em minusculas para pesquisa
         const ptText = q.pt ? q.pt.toLowerCase() : "";
         const enText = q.en ? q.en.toLowerCase() : "";
-
         let effectsToAdd = [];
 
-        // --- Eixo: Laicismo (Left) vs Teocracia (Right) ---
-        // Keywords: Estado/Leis + Religião/Sagrado
-        // Teocracia = +Weight, Laicismo = -Weight
-        const stateRelPt = (ptText.includes("estado") || ptText.includes("leis") || ptText.includes("governo")) && (ptText.includes("religi") || ptText.includes("igreja") || ptText.includes("sagrado") || ptText.includes("deus"));
-        const stateRelEn = (enText.includes("state") || enText.includes("law") || enText.includes("gov")) && (enText.includes("relig") || enText.includes("church") || enText.includes("sacred") || enText.includes("god"));
+        // --- Keywords for Religion Detection ---
+        const isRel = ptText.includes("religi") || ptText.includes("igreja") || ptText.includes("sagrado") || ptText.includes("deus") || ptText.includes("fé") || ptText.includes("divin") ||
+            enText.includes("religi") || enText.includes("church") || enText.includes("sacred") || enText.includes("god") || enText.includes("faith") || enText.includes("divine");
 
-        // Casos específicos conhecidos
-        if (stateRelPt || stateRelEn || q.pt.includes("símbolos religiosos")) {
-            // "Estado gasta dinheiro em eventos religiosos" -> Agree = Secular/Laic (-1)
-            // "Leis baseadas em textos sagrados" -> Agree = Theo (+1)
-            // "Símbolos banidos" -> Agree = Laic (-1)
+        if (isRel) {
+            // Eixo State: Laicismo (-1) vs Teocracia (+1)
+            let wS = 0;
+            const isStateIssue = ptText.includes("estado") || ptText.includes("leis") || ptText.includes("governo") || ptText.includes("públic") ||
+                enText.includes("state") || enText.includes("law") || enText.includes("gov") || enText.includes("public");
 
-            // Heurística: Se a frase sugere "Remover religião", Concordar é Laicismo (Negativo).
-            // Se sugere "Impor religião", Concordar é Teocracia (Positivo).
-
-            let weight = 0;
-            if (ptText.includes("gasta") || ptText.includes("banidos") || ptText.includes("não tem o direito") || ptText.includes("separação")) {
-                weight = -1; // Laicismo
-            } else if (ptText.includes("basear") || ptText.includes("defender") || ptText.includes("oficial")) {
-                weight = 1; // Teocracia
+            if (isStateIssue) {
+                if (ptText.includes("separação") || ptText.includes("banir") || ptText.includes("remover") || ptText.includes("neutral") || ptText.includes("laic") || ptText.includes("não deve") || ptText.includes("extrair") || ptText.includes("gasta")) {
+                    wS = -1; // Laicismo
+                } else if (ptText.includes("basear") || ptText.includes("apoiar") || ptText.includes("oficial") || ptText.includes("promover") || ptText.includes("valores cristãos") || ptText.includes("bíblia")) {
+                    wS = 1; // Teocracia
+                }
             }
+            if (wS !== 0) effectsToAdd.push({ axis: 'rel_state', weight: wS });
 
-            if (weight !== 0) {
-                effectsToAdd.push({ axis: 'rel_state', weight: weight });
+            // Eixo Personal: Secularismo (-1) vs Religiosidade (+1)
+            let wP = 0;
+            if (ptText.includes("mal") || ptText.includes("obsoleto") || ptText.includes("ilusão") || ptText.includes("ate") || ptText.includes("não exist") || ptText.includes("superstição")) {
+                wP = -1; // Secularismo
+            } else if (ptText.includes("importante") || ptText.includes("guia") || ptText.includes("verdade") || ptText.includes("moral") || ptText.includes("conforto") || ptText.includes("espiritual") || ptText.includes("fé")) {
+                wP = 1; // Religiosidade
             }
-        }
-
-        // --- Eixo: Secularismo (Left) vs Religiosidade (Right) ---
-        // Keywords: Fé, Deus, Espiritual, Ateu
-        // Religiosidade = +Weight, Secularismo = -Weight
-        const isReligiousTopic = ptText.includes("fé") || ptText.includes("deus") || ptText.includes("espiritual") || ptText.includes("religi") || ptText.includes("ateu");
-
-        if (isReligiousTopic) {
-            let weight = 0;
-            // "Religião faz mal" -> Agree = Secular (-1)
-            // "Deus existe" -> Agree = Rel (+1)
-            // "Ateísmo" -> Agree = Secular (-1)
-
-            if (ptText.includes("mal") || ptText.includes("ateu") || ptText.includes("obsoleta") || ptText.includes("opiáceo")) {
-                weight = -1; // Secular
-            } else if (ptText.includes("importante") || ptText.includes("verdade") || ptText.includes("salvação") || ptText.includes("guia")) {
-                weight = 1; // Religioso
-            }
-
-            if (weight !== 0) {
-                effectsToAdd.push({ axis: 'rel_pers', weight: weight });
-            }
+            if (wP !== 0) effectsToAdd.push({ axis: 'rel_pers', weight: wP });
         }
 
         if (effectsToAdd.length > 0) {
             secondaryEffectsMap[q.id] = effectsToAdd;
         }
     });
-    console.log(`Smart Tagging Complete. ${Object.keys(secondaryEffectsMap).length} questions tagged.`);
+    console.log(`Smart Tagging Complete. ${Object.keys(secondaryEffectsMap).length} religious questions tagged.`);
 }
 
 // Processar dados do amigo (Smart Matching) / Process friend data (Smart Matching)
@@ -565,76 +538,57 @@ function finishQuiz() {
 }
 
 function calculateAndRender() {
-    // Inicializar contadores / Initialize counters
+    console.log("Calculating results...");
     const scores = {};
     const counts = {};
 
-    // Preparar todos os eixos a 0 / Set all axes to 0
-    questionsData.forEach(q => {
-        if (!scores[q.effect.axis]) {
-            scores[q.effect.axis] = 0;
-            counts[q.effect.axis] = 0;
-        }
+    // 1. Initialize all possible axes from translations to avoid NaN
+    Object.keys(translations.en.barLabels).forEach(axis => {
+        scores[axis] = 0;
+        counts[axis] = 0;
     });
 
-    // Somar pontos / Sum points
+    // 2. Aggregate scores from user answers
     userAnswers.forEach(ans => {
         if (ans.effect) {
-            // Nota: score é 3 (Concordo muito) a -3 (Discordo muito)
-            // Weight é 1 ou -1
-            scores[ans.effect.axis] += (ans.answer_score_raw * ans.effect.weight);
-            counts[ans.effect.axis] += 3; // Máximo possível por pergunta é 3 (valor absoluto)
+            const axis = ans.effect.axis;
+            if (!(axis in scores)) {
+                scores[axis] = 0;
+                counts[axis] = 0;
+            }
+            scores[axis] += (ans.answer_score_raw * ans.effect.weight);
+            counts[axis] += 3;
         }
     });
 
-    // Renderizar os 11 Pequenos Gráficos / Render 11 Small Charts
+    // 3. Render Small Compass Charts
     groupsConfig.forEach(group => {
-        const xAxis = group.x;
-        const yAxis = group.y;
-
-        // Normalizar para escala -10 a 10
-        let xVal = 0, yVal = 0;
-        if (counts[xAxis] > 0) xVal = (scores[xAxis] / counts[xAxis]) * 10;
-        if (counts[yAxis] > 0) yVal = (scores[yAxis] / counts[yAxis]) * 10;
-
+        const xVal = counts[group.x] > 0 ? (scores[group.x] / counts[group.x]) * 10 : 0;
+        const yVal = counts[group.y] > 0 ? (scores[group.y] / counts[group.y]) * 10 : 0;
         renderSmallChart(group.id, group.title, xVal, yVal);
     });
 
-    // Renderizar Barras Detalhadas / Render Detailed Bars
+    // 4. Render Horizontal Progress Bars
     renderDetailedBars(scores, counts);
 
-    // Renderizar Emblema de Ideologia / Render Ideology Badge (Dot)
-    // Eixos usados: Económico (X) e Governamental (Y)
+    // 5. Position Ideology Map Dot
+    renderIdeologyMapDot(scores, counts);
+}
+
+function renderIdeologyMapDot(scores, counts) {
     const ecoScore = scores['eco_sys'] || 0;
     const govScore = scores['gov_scope'] || 0;
-
-    // Normalizar para percentagem (0% a 100%) para CSS 'left' e 'top'
-    // Assumindo:
-    // Económico: -10 = Esquerda (0%), +10 = Direita (100%)
-    // Governamental: +10 = Autoritário (Top 0%), -10 = Libertário (Bottom 100%) [Padrão Political Compass]
-
-    // Contagens máximas reais para normalização precisa
     const maxEco = counts['eco_sys'] || 1;
     const maxGov = counts['gov_scope'] || 1;
 
-    // Normalizar score (-max a +max) para (0 a 1)
-    // Calcular posição do ponto no mapa (Heat Dot)
-    // Calculate dot position on map
+    // Normalize from [-1, 1] range to [0, 1]
+    const normX = (ecoScore + maxEco) / (2 * maxEco);
+    const normY = (govScore + maxGov) / (2 * maxGov);
 
-    // Normalizar score (-max a +max) para (0 a 1)
-    // Eixo X (Eco): -10 (Left/Soc) a +10 (Right/Cap) -> 0% a 100%
-    const normEco = (ecoScore + maxEco) / (2 * maxEco);
+    const xPos = normX * 100;
+    const yPos = (1 - normY) * 100; // Invert for Y (Top is 0%)
 
-    // Eixo Y (Gov): -10 (Lib) a +10 (Auth)
-    // No mapa padrão: Topo é Authoritarian (Auth), Baixo é Libertarian (Lib).
-    // Se Score +10 é Auth, então +10 deve ser 0% (Top).
-    // Se Score -10 é Lib, então -10 deve ser 100% (Bottom).
-    const normGov = (govScore + maxGov) / (2 * maxGov); // 0 (Lib) a 1 (Auth)
-
-    const xPos = normEco * 100;
-    const yPos = (1 - normGov) * 100; // Inverter Y (1=Top=0%)
-
-    console.log(`Map Coords: Eco=${ecoScore}(${xPos}%), Gov=${govScore}(${yPos}%)`);
+    console.log(`Map: Eco=${ecoScore.toFixed(1)}/Max=${maxEco} (${xPos.toFixed(1)}%), Gov=${govScore.toFixed(1)}/Max=${maxGov} (${yPos.toFixed(1)}%)`);
 
     const dot = document.getElementById('ideology-dot');
     if (dot) {
