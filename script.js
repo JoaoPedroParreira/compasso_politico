@@ -219,24 +219,26 @@ async function startQuiz() {
     userAnswers = [];
 
     // Definir Modo (Full vs Half vs Quarter)
-    const modeRadios = document.getElementsByName('gameMode');
-    for (const radio of modeRadios) {
-        if (radio.checked) {
-            currentMode = radio.value;
-            break;
-        }
+    const selectedRadio = document.querySelector('input[name="gameMode"]:checked');
+    if (selectedRadio) {
+        currentMode = selectedRadio.value;
+    } else {
+        currentMode = 'full';
     }
+    console.log("Mode selected:", currentMode); // Debug
 
     // Obter perguntas válidas / Get valid questions
     const validQuestions = filterQuestionsByLang();
 
     if (currentMode === 'quarter') {
-        shuffledQuestions = selectQuestionsForMode(validQuestions, 5); // ~55 perguntas
+        shuffledQuestions = selectQuestionsForMode(validQuestions, 5); // ~55 questions
     } else if (currentMode === 'half') {
-        shuffledQuestions = selectQuestionsForMode(validQuestions, 11); // ~121 perguntas
+        shuffledQuestions = selectQuestionsForMode(validQuestions, 11); // ~121 questions
     } else {
-        shuffledQuestions = shuffleQuestions([...validQuestions]); // ~240 perguntas
+        shuffledQuestions = shuffleQuestions([...validQuestions]); // ~240 questions
     }
+
+    console.log("Final questions count:", shuffledQuestions.length); // Debug
 
     // Atualizar Interface / Update Interface
     totalQSpan.textContent = shuffledQuestions.length;
@@ -254,7 +256,7 @@ async function startQuiz() {
 // Lógica de Seleção de Perguntas / Question Selection Logic
 function selectQuestionsForMode(sourceQuestions, countPerGroup) {
     let selected = [];
-    
+
     // Para cada grupo (ex: Economia, Cultura...), selecionar N perguntas aleatórias
     groupsConfig.forEach(group => {
         const relevantAxes = [group.x, group.y];
@@ -321,7 +323,8 @@ function showQuestion() {
 
     // Botão Voltar sempre visível / Back button always visible
     prevBtn.classList.remove('hidden');
-    
+    prevBtn.style.display = 'flex'; // Force display to override any specificity issues
+
     // Atualizar texto do botão Voltar / Update Back button text
     const backSpan = prevBtn.querySelector('span');
     if (currentQuestionIndex === 0) {
@@ -359,10 +362,10 @@ function prevQuestion() {
     } else {
         // Voltar ao Menu Principal / Back to Main Menu
         if (confirm(currentLang === 'pt' ? "Voltar ao menu inicial? O progresso será perdido." : "Return to main menu? Progress will be lost.")) {
-             quizScreen.classList.add('hidden');
-             quizScreen.classList.remove('active');
-             startScreen.classList.remove('hidden');
-             startScreen.classList.add('active');
+            quizScreen.classList.add('hidden');
+            quizScreen.classList.remove('active');
+            startScreen.classList.remove('hidden');
+            startScreen.classList.add('active');
         }
     }
 }
@@ -476,25 +479,23 @@ function calculateAndRender() {
     const maxGov = counts['gov_scope'] || 1;
 
     // Normalizar score (-max a +max) para (0 a 1)
-    const normEco = (ecoScore + maxEco) / (2 * maxEco); // 0 (Esq) a 1 (Dir)
-    const normGov = (govScore + maxGov) / (2 * maxGov); // 0 (Lib) a 1 (Auth) - Cuidado com a direção Y
+    // Calcular posição do ponto no mapa (Heat Dot)
+    // Calculate dot position on map
 
-    // Se a imagem segue o padrão "Autoritário em Cima", então Y=0% é Auth, Y=100% é Lib.
-    // Auth corresponde a score POSITIVO no nosso sistema?
-    // Verificar questions.js:
-    // "Sacrificar liberdade por segurança" -> gov_scope weight 1 (Autoritário).
-    // Logo Score Positivo = Autoritário = Topo (0%).
-    // Score Negativo = Libertário = Fundo (100%).
+    // Normalizar score (-max a +max) para (0 a 1)
+    // Eixo X (Eco): -10 (Left/Soc) a +10 (Right/Cap) -> 0% a 100%
+    const normEco = (ecoScore + maxEco) / (2 * maxEco);
 
-    // Fórmula Y:
-    // +1 (Auth) -> 0%
-    // -1 (Lib) -> 100%
-    // y% = (1 - norm) * 100 ? Não, vamos ver:
-    // Se normGov = 1 (Total Auth), queremos 0%. (1 - 1) * 100 = 0%. Correto.
-    // Se normGov = 0 (Total Lib), queremos 100%. (1 - 0) * 100 = 100%. Correto.
+    // Eixo Y (Gov): -10 (Lib) a +10 (Auth)
+    // No mapa padrão: Topo é Authoritarian (Auth), Baixo é Libertarian (Lib).
+    // Se Score +10 é Auth, então +10 deve ser 0% (Top).
+    // Se Score -10 é Lib, então -10 deve ser 100% (Bottom).
+    const normGov = (govScore + maxGov) / (2 * maxGov); // 0 (Lib) a 1 (Auth)
 
     const xPos = normEco * 100;
-    const yPos = (1 - normGov) * 100;
+    const yPos = (1 - normGov) * 100; // Inverter Y (1=Top=0%)
+
+    console.log(`Map Coords: Eco=${ecoScore}(${xPos}%), Gov=${govScore}(${yPos}%)`);
 
     const dot = document.getElementById('ideology-dot');
     if (dot) {
