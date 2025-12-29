@@ -538,7 +538,7 @@ function finishQuiz() {
 }
 
 function calculateAndRender() {
-    console.log("Calculating results...");
+    console.log("\n=== CALCULATING RESULTS ===");
     const scores = {};
     const counts = {};
 
@@ -549,6 +549,7 @@ function calculateAndRender() {
     });
 
     // 2. Aggregate scores from user answers
+    console.log(`Processing ${userAnswers.length} answers...`);
     userAnswers.forEach(ans => {
         if (ans.effect) {
             const axis = ans.effect.axis;
@@ -560,6 +561,21 @@ function calculateAndRender() {
             counts[axis] += 3;
         }
     });
+
+    // Log detailed breakdown
+    console.log("\n--- SCORE BREAKDOWN ---");
+    const allAxes = Object.keys(translations.en.barLabels);
+    allAxes.forEach(axis => {
+        if (counts[axis] > 0) {
+            const normalized = (scores[axis] / counts[axis]) * 10;
+            console.log(`${axis}: ${scores[axis].toFixed(1)}/${counts[axis]} = ${normalized.toFixed(2)} (${Math.floor(counts[axis] / 3)} questions)`);
+        }
+    });
+
+    // Highlight Religion axes
+    console.log("\n--- RELIGION AXES STATUS ---");
+    console.log(`rel_state: ${counts['rel_state'] > 0 ? `✓ ${Math.floor(counts['rel_state'] / 3)} questions` : '✗ No data'}`);
+    console.log(`rel_pers: ${counts['rel_pers'] > 0 ? `✓ ${Math.floor(counts['rel_pers'] / 3)} questions` : '✗ No data'}`);
 
     // 3. Render Small Compass Charts
     groupsConfig.forEach(group => {
@@ -573,6 +589,8 @@ function calculateAndRender() {
 
     // 5. Position Ideology Map Dot
     renderIdeologyMapDot(scores, counts);
+
+    console.log("=== CALCULATION COMPLETE ===\n");
 }
 
 function renderIdeologyMapDot(scores, counts) {
