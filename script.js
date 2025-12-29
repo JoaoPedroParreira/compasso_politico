@@ -36,6 +36,7 @@ const resultScreen = document.getElementById('result-screen');
 const detailedBarsContainer = document.getElementById('detailed-bars');
 
 // Botões e Inputs / Buttons and Inputs
+// Botões e Inputs / Buttons and Inputs
 const langToggle = document.getElementById('lang-toggle');
 const startBtn = document.getElementById('start-btn');
 const prevBtn = document.getElementById('prev-btn');
@@ -43,6 +44,7 @@ const downloadBtn = document.getElementById('download-btn');
 const restartBtn = document.getElementById('restart-btn');
 const answerBtns = document.querySelectorAll('.answer-btn'); // Botões de resposta (Concordo/Discordo)
 const friendFileInput = document.getElementById('friend-file');
+const loadResultsInput = document.getElementById('load-results-file'); // Novo input
 const compareModeToggle = document.getElementById('compare-mode-toggle');
 // quickModeToggle removed, now using radio buttons name="gameMode"
 
@@ -156,11 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Event Listeners / Ouvintes de Eventos
+    // Event Listeners / Ouvintes de Eventos
     langToggle.addEventListener('click', toggleLanguage);
     startBtn.addEventListener('click', startQuiz);
     prevBtn.addEventListener('click', prevQuestion);
     downloadBtn.addEventListener('click', downloadJSON);
     restartBtn.addEventListener('click', () => location.reload()); // Recarregar página para reiniciar
+    if (loadResultsInput) loadResultsInput.addEventListener('change', loadUserResults); // Listener para carregar resultados
 
     // Botões de Resposta / Answer Buttons
     answerBtns.forEach(btn => {
@@ -194,6 +198,44 @@ function filterQuestionsByLang() {
     // Retorna apenas perguntas que incluem o idioma atual na lista 'langs'
     // Returns only questions that include the current language in 'langs' list
     return questionsData.filter(q => q.langs && q.langs.includes(currentLang));
+}
+
+// Carregar Resultados do Utilizador / Load User Results
+async function loadUserResults(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+
+        if (!Array.isArray(data) || data.length === 0) {
+            alert(currentLang === 'pt' ? "Ficheiro inválido ou vazio." : "Invalid or empty file.");
+            return;
+        }
+
+        // Restaurar respostas / Restore answers
+        // Validar e reconstruir 'effect' se necessário para segurança
+        userAnswers = data.map(ans => {
+            // Se o objeto já tiver o efeito, usar. Se não, tentar buscar às perguntas originais.
+            if (!ans.effect && ans.question_id_str) {
+                const originalQ = questionsData.find(q => q.id === ans.question_id_str);
+                if (originalQ) {
+                    ans.effect = originalQ.effect;
+                }
+            }
+            return ans;
+        });
+
+        // Simular finalização / Simulate finish
+        startScreen.classList.add('hidden');
+        startScreen.classList.remove('active');
+        finishQuiz();
+
+    } catch (err) {
+        console.error(err);
+        alert(currentLang === 'pt' ? "Erro ao ler o ficheiro." : "Error reading file.");
+    }
 }
 
 // Começar o Teste / Start Quiz
