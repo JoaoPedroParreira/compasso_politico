@@ -21,7 +21,7 @@ let userAnswers = [];             // Respostas do utilizador / User answers
 let shuffledQuestions = [];       // Perguntas baralhadas para o teste / Shuffled questions for the quiz
 let friendAnswersMap = {};        // Mapa de respostas do amigo (comparação) / Friend's answers map (comparison)
 let comparisonMode = 'none';      // Modo de comparação: 'none', 'surprise', 'open'
-let currentMode = 'standard';     // Modo de jogo: 'standard' (tudo) ou 'quick' (rápido)
+let currentMode = 'full';     // Modo de jogo: 'full', 'half', 'quarter'
 let chartInstances = {};          // Guardar instâncias dos gráficos para limpar depois / Store chart instances to destroy later
 
 // ------------------------------------------
@@ -44,7 +44,7 @@ const restartBtn = document.getElementById('restart-btn');
 const answerBtns = document.querySelectorAll('.answer-btn'); // Botões de resposta (Concordo/Discordo)
 const friendFileInput = document.getElementById('friend-file');
 const compareModeToggle = document.getElementById('compare-mode-toggle');
-const quickModeToggle = document.getElementById('quick-mode-toggle');
+// quickModeToggle removed, now using radio buttons name="gameMode"
 
 // Elementos de Texto e Feedback / Text and Feedback Elements
 const questionText = document.getElementById('question-text');
@@ -218,16 +218,24 @@ async function startQuiz() {
     currentQuestionIndex = 0;
     userAnswers = [];
 
-    // Definir Modo (Rápido vs Standard) / Set Mode
-    currentMode = (quickModeToggle && quickModeToggle.checked) ? 'quick' : 'standard';
+    // Definir Modo (Full vs Half vs Quarter)
+    const modeRadios = document.getElementsByName('gameMode');
+    for (const radio of modeRadios) {
+        if (radio.checked) {
+            currentMode = radio.value;
+            break;
+        }
+    }
 
     // Obter perguntas válidas / Get valid questions
     const validQuestions = filterQuestionsByLang();
 
-    if (currentMode === 'quick') {
-        shuffledQuestions = selectQuestionsForQuickMode(validQuestions);
+    if (currentMode === 'quarter') {
+        shuffledQuestions = selectQuestionsForMode(validQuestions, 5); // ~55 perguntas
+    } else if (currentMode === 'half') {
+        shuffledQuestions = selectQuestionsForMode(validQuestions, 11); // ~121 perguntas
     } else {
-        shuffledQuestions = shuffleQuestions([...validQuestions]);
+        shuffledQuestions = shuffleQuestions([...validQuestions]); // ~240 perguntas
     }
 
     // Atualizar Interface / Update Interface
@@ -243,18 +251,17 @@ async function startQuiz() {
     showQuestion();
 }
 
-// Lógica de Modo Rápido / Quick Mode Logic
-function selectQuestionsForQuickMode(sourceQuestions) {
+// Lógica de Seleção de Perguntas / Question Selection Logic
+function selectQuestionsForMode(sourceQuestions, countPerGroup) {
     let selected = [];
-    const QUESTIONS_PER_THEME = 5; // 5 perguntas por tema
-
-    // Para cada grupo (ex: Economia, Cultura...), selecionar 5 perguntas aleatórias
+    
+    // Para cada grupo (ex: Economia, Cultura...), selecionar N perguntas aleatórias
     groupsConfig.forEach(group => {
         const relevantAxes = [group.x, group.y];
         const groupQuestions = sourceQuestions.filter(q => relevantAxes.includes(q.effect.axis));
 
         const shuffled = shuffleQuestions([...groupQuestions]);
-        selected.push(...shuffled.slice(0, QUESTIONS_PER_THEME));
+        selected.push(...shuffled.slice(0, countPerGroup));
     });
 
     return shuffleQuestions(selected);
@@ -312,7 +319,16 @@ function showQuestion() {
     friendIndicator.classList.add('hidden');
     document.querySelectorAll('.friend-marker').forEach(el => el.classList.add('hidden'));
 
-    prevBtn.classList.toggle('hidden', currentQuestionIndex === 0);
+    // Botão Voltar sempre visível / Back button always visible
+    prevBtn.classList.remove('hidden');
+    
+    // Atualizar texto do botão Voltar / Update Back button text
+    const backSpan = prevBtn.querySelector('span');
+    if (currentQuestionIndex === 0) {
+        backSpan.textContent = currentLang === 'pt' ? "Menu Inicial" : "Main Menu";
+    } else {
+        backSpan.textContent = currentLang === 'pt' ? "Voltar" : "Back";
+    }
 
     setTimeout(() => {
         // Texto da pergunta no idioma atual
@@ -340,6 +356,14 @@ function prevQuestion() {
         currentQuestionIndex--;
         userAnswers.pop(); // Remover última resposta / Remove last answer
         showQuestion();
+    } else {
+        // Voltar ao Menu Principal / Back to Main Menu
+        if (confirm(currentLang === 'pt' ? "Voltar ao menu inicial? O progresso será perdido." : "Return to main menu? Progress will be lost.")) {
+             quizScreen.classList.add('hidden');
+             quizScreen.classList.remove('active');
+             startScreen.classList.remove('hidden');
+             startScreen.classList.add('active');
+        }
     }
 }
 

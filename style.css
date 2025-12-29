@@ -220,6 +220,55 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
+
+/* Mode Selector Group */
+.mode-selector {
+    display: flex;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 4px;
+    margin-top: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mode-option {
+    flex: 1;
+    position: relative;
+    cursor: pointer;
+}
+
+.mode-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.mode-label {
+    display: block;
+    text-align: center;
+    padding: 10px 5px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+.mode-option input:checked + .mode-label {
+    background: var(--accent-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.mode-option:hover .mode-label {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.mode-option input:checked:hover + .mode-label {
+    background: var(--accent-color);
+}
+
 /* Quiz UI */
 .quiz-header-row {
     display: flex;
