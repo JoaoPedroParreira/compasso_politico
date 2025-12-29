@@ -23,6 +23,7 @@ let friendAnswersMap = {};        // Mapa de respostas do amigo (comparação) /
 let comparisonMode = 'none';      // Modo de comparação: 'none', 'surprise', 'open'
 let currentMode = 'full';     // Modo de jogo: 'full', 'half', 'quarter'
 let chartInstances = {};          // Guardar instâncias dos gráficos para limpar depois / Store chart instances to destroy later
+let secondaryEffectsMap = {};     // Mapa de efeitos secundários (Smart Tagging)
 
 // ------------------------------------------
 // 3. Elementos do DOM / DOM Elements
@@ -73,7 +74,8 @@ const groupsConfig = [
     { id: 'pol', title: 'Political', x: 'pol_intensity', y: 'pol_activism', xLabel: ['Moderate', 'Radical'], yLabel: ['Apolitical', 'Politicized'] },
     // Filosofia dividida em duas partes / Philosophy split into two parts
     { id: 'phil_a', title: 'Philosophy A', x: 'phil_soc', y: 'phil_change', xLabel: ['Collectivism', 'Individualism'], yLabel: ['Peace', 'Revolution'] },
-    { id: 'phil_b', title: 'Philosophy B', x: 'phil_moral', y: 'phil_ethics', xLabel: ['Realism', 'Idealism'], yLabel: ['Deontology', 'Consequentialism'] }
+    { id: 'phil_b', title: 'Philosophy B', x: 'phil_moral', y: 'phil_ethics', xLabel: ['Realism', 'Idealism'], yLabel: ['Deontology', 'Consequentialism'] },
+    { id: 'rel', title: 'Religion', x: 'rel_state', y: 'rel_pers', xLabel: ['Laicism', 'Theocracy'], yLabel: ['Secularism', 'Religiosity'] }
 ];
 
 // ------------------------------------------
@@ -109,7 +111,10 @@ const translations = {
             phil_soc: ["Coletivismo", "Individualismo"],
             phil_change: ["Paz", "Revolução"],
             phil_moral: ["Realismo", "Idealismo"],
-            phil_ethics: ["Deontologia", "Consequencialismo"]
+            phil_moral: ["Realismo", "Idealismo"],
+            phil_ethics: ["Deontologia", "Consequencialismo"],
+            rel_state: ["Laicismo", "Teocracia"],
+            rel_pers: ["Secularismo", "Religiosidade"]
             // Consequencialismo: Os fins justificam os meios. / Ends justify means.
             // Deontologia: Regras morais absolutas. / Absolute moral rules.
         }
@@ -142,7 +147,10 @@ const translations = {
             phil_soc: ["Collectivism", "Individualism"],
             phil_change: ["Peace", "Revolution"],
             phil_moral: ["Realism", "Idealism"],
-            phil_ethics: ["Deontology", "Consequentialism"]
+            phil_moral: ["Realismo", "Idealismo"],
+            phil_ethics: ["Deannaology", "Consequentialism"],
+            rel_state: ["Laicism", "Theocracy"],
+            rel_pers: ["Secularism", "Religiosity"]
         }
     }
 };
@@ -165,6 +173,9 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadBtn.addEventListener('click', downloadJSON);
     restartBtn.addEventListener('click', () => location.reload()); // Recarregar página para reiniciar
     if (loadResultsInput) loadResultsInput.addEventListener('change', loadUserResults); // Listener para carregar resultados
+
+    // Configuração Inicial de Efeitos Secundários / Initial Setup of Secondary Effects
+    assignSecondaryEffects();
 
     // Botões de Resposta / Answer Buttons
     answerBtns.forEach(btn => {
@@ -311,6 +322,78 @@ function selectQuestionsForMode(sourceQuestions, countPerGroup) {
     return shuffleQuestions(selected);
 }
 
+// ------------------------------------------
+// 8. Lógica de Efeitos Secundários / Secondary Effects Logic (Smart Tagging)
+// ------------------------------------------
+function assignSecondaryEffects() {
+    console.log("Assigning secondary effects for Religion axes...");
+    secondaryEffectsMap = {};
+
+    questionsData.forEach(q => {
+        if (!q.langs) return;
+
+        // Obter textos em minusculas para pesquisa
+        const ptText = q.pt ? q.pt.toLowerCase() : "";
+        const enText = q.en ? q.en.toLowerCase() : "";
+
+        let effectsToAdd = [];
+
+        // --- Eixo: Laicismo (Left) vs Teocracia (Right) ---
+        // Keywords: Estado/Leis + Religião/Sagrado
+        // Teocracia = +Weight, Laicismo = -Weight
+        const stateRelPt = (ptText.includes("estado") || ptText.includes("leis") || ptText.includes("governo")) && (ptText.includes("religi") || ptText.includes("igreja") || ptText.includes("sagrado") || ptText.includes("deus"));
+        const stateRelEn = (enText.includes("state") || enText.includes("law") || enText.includes("gov")) && (enText.includes("relig") || enText.includes("church") || enText.includes("sacred") || enText.includes("god"));
+
+        // Casos específicos conhecidos
+        if (stateRelPt || stateRelEn || q.pt.includes("símbolos religiosos")) {
+            // "Estado gasta dinheiro em eventos religiosos" -> Agree = Secular/Laic (-1)
+            // "Leis baseadas em textos sagrados" -> Agree = Theo (+1)
+            // "Símbolos banidos" -> Agree = Laic (-1)
+
+            // Heurística: Se a frase sugere "Remover religião", Concordar é Laicismo (Negativo).
+            // Se sugere "Impor religião", Concordar é Teocracia (Positivo).
+
+            let weight = 0;
+            if (ptText.includes("gasta") || ptText.includes("banidos") || ptText.includes("não tem o direito") || ptText.includes("separação")) {
+                weight = -1; // Laicismo
+            } else if (ptText.includes("basear") || ptText.includes("defender") || ptText.includes("oficial")) {
+                weight = 1; // Teocracia
+            }
+
+            if (weight !== 0) {
+                effectsToAdd.push({ axis: 'rel_state', weight: weight });
+            }
+        }
+
+        // --- Eixo: Secularismo (Left) vs Religiosidade (Right) ---
+        // Keywords: Fé, Deus, Espiritual, Ateu
+        // Religiosidade = +Weight, Secularismo = -Weight
+        const isReligiousTopic = ptText.includes("fé") || ptText.includes("deus") || ptText.includes("espiritual") || ptText.includes("religi") || ptText.includes("ateu");
+
+        if (isReligiousTopic) {
+            let weight = 0;
+            // "Religião faz mal" -> Agree = Secular (-1)
+            // "Deus existe" -> Agree = Rel (+1)
+            // "Ateísmo" -> Agree = Secular (-1)
+
+            if (ptText.includes("mal") || ptText.includes("ateu") || ptText.includes("obsoleta") || ptText.includes("opiáceo")) {
+                weight = -1; // Secular
+            } else if (ptText.includes("importante") || ptText.includes("verdade") || ptText.includes("salvação") || ptText.includes("guia")) {
+                weight = 1; // Religioso
+            }
+
+            if (weight !== 0) {
+                effectsToAdd.push({ axis: 'rel_pers', weight: weight });
+            }
+        }
+
+        if (effectsToAdd.length > 0) {
+            secondaryEffectsMap[q.id] = effectsToAdd;
+        }
+    });
+    console.log(`Smart Tagging Complete. ${Object.keys(secondaryEffectsMap).length} questions tagged.`);
+}
+
 // Processar dados do amigo (Smart Matching) / Process friend data (Smart Matching)
 function processFriendData(data) {
     friendAnswersMap = {};
@@ -417,12 +500,26 @@ function handleAnswer(value, score) {
     const currentQ = shuffledQuestions[currentQuestionIndex];
 
     // Guardar resposta do utilizador
+    // Save user answer - Primary Effect
     userAnswers.push({
-        question_id_str: currentQ.id,
+        question_id_str: currentQ.id, // Ensure we use string ID
         answer_value: value,
         answer_score_raw: score,
-        effect: currentQ.effect // Guardar o efeito (eixo e peso)
+        effect: currentQ.effect       // Guardar o efeito (eixo e peso)
     });
+
+    // Check for Secondary Effects (Smart Tagging for Religion)
+    if (secondaryEffectsMap[currentQ.id]) {
+        secondaryEffectsMap[currentQ.id].forEach(secEffect => {
+            userAnswers.push({
+                question_id_str: currentQ.id + "_sec", // Virtual ID
+                answer_value: value,
+                answer_score_raw: score,
+                effect: secEffect
+            });
+            console.log(`Added secondary effect for ${currentQ.id}:`, secEffect);
+        });
+    }
 
     // Modo Surpresa: Mostrar se igual ou diferente / Surprise Mode: Show same/diff
     if (comparisonMode === 'surprise' && friendAnswersMap[currentQ.id]) {
