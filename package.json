@@ -1,0 +1,9 @@
+{
+  "name": "compasso-politico-local",
+  "private": true,
+  "scripts": {
+    "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File ./start-local.ps1",
+    "build": "npm --prefix frontend run build",
+    "test": "npm --prefix frontend test"
+  }
+}

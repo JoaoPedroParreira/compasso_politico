@@ -1,0 +1,38 @@
+{
+  "ideologies": [
+    "nehruismo",
+    "thatcherismo",
+    "conservadorismo-civico-major",
+    "democracia-crista-merkel",
+    "social-democracia-bem-estar-ardern",
+    "progressismo-taiwanes-tsai",
+    "social-democracia-bachelet",
+    "socialismo-democratico-soares",
+    "cavaquismo",
+    "social-democracia-costa"
+  ],
+  "countries": [
+    "india-nehru",
+    "reino-unido-thatcher",
+    "reino-unido-major",
+    "alemanha-merkel-iv",
+    "nova-zelandia-ardern-i",
+    "taiwan-tsai-i",
+    "chile-bachelet-ii",
+    "portugal-soares-i",
+    "portugal-cavaco-xii",
+    "portugal-costa-xxii"
+  ],
+  "personalities": [
+    "jawaharlal-nehru",
+    "margaret-thatcher",
+    "john-major",
+    "angela-merkel",
+    "jacinda-ardern",
+    "tsai-ing-wen",
+    "michelle-bachelet",
+    "mario-soares",
+    "cavaco-silva",
+    "antonio-costa"
+  ]
+}
