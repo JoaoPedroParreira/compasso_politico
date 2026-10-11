@@ -1314,5 +1314,65 @@
     "name": "Portugal — Costa’s XXII Government",
     "category": "Democratic government · programmatic profile",
     "description": "Declared government orientation in 2019–2022. The XXII Government programme’s social-democratic variant: public services and reduced inequality within a mixed economy, decentralisation, integrated migrant reception, civil rights and energy and digital transitions. This profile does not represent public opinion or the country’s current situation."
+  },
+  {
+    "id": "liberia-sirleaf-2006",
+    "name": "Liberia — early Sirleaf government",
+    "category": "Government · programme assessment",
+    "description": "2006–2007: Postwar liberal reconstruction: constitutional rights, private investment, state reform, women’s inclusion and international cooperation for peace. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "gana-nkrumah-partido-unico",
+    "name": "Ghana — Nkrumah’s one-party state",
+    "category": "One-party republic",
+    "description": "1964–1966: Pan-African socialism with planned industrialisation, public ownership and continental union. In 1964–1966 Ghana it coexisted with one-party rule and repression of opposition. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "malasia-mahathir-2018",
+    "name": "Malaysia — Mahathir’s 2018 programme",
+    "category": "Government · programme assessment",
+    "description": "2018–2020: Coalition reformism with corruption controls, state autonomy, a mixed economy and modernisation. Retains bumiputera preferences and Islam’s constitutional status. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "paquistao-imran-2018",
+    "name": "Pakistan — Imran Khan’s 2018 programme",
+    "category": "Government · programme assessment",
+    "description": "2018–2022: A Medina-inspired welfare-state project with corruption controls, federal decentralisation, social services, entrepreneurship and independent foreign policy. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "indonesia-jokowi-segundo-mandato",
+    "name": "Indonesia — Jokowi’s second-term programme",
+    "category": "Government · programme assessment",
+    "description": "2020–2024: Infrastructure, industrial transformation and human-capital developmentalism within Pancasila. Combines public enterprises and private investment, recognised religious pluralism and strong state security. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "coreia-sul-kim-1998",
+    "name": "South Korea — early Kim Dae-jung government",
+    "category": "Government · programme assessment",
+    "description": "1998–2000: Democratic market reformism with social rights, economic opening and dialogue with the North. Sunshine policy combined nonprovocation and cooperation with defensive deterrence. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "mexico-amlo-programa-2019",
+    "name": "Mexico — López Obrador’s 2019 programme",
+    "category": "Government · programme assessment",
+    "description": "2019–2024: The Fourth Transformation’s post-neoliberal project: public energy enterprises, redistribution, administrative austerity and sovereignty. The plan declares nondiscrimination and noninterventionist foreign policy. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "bolivia-arce-pdes-2021",
+    "name": "Bolivia — Arce’s 2021 plan",
+    "category": "Government · programme assessment",
+    "description": "2020–2021: The Social Communitarian Productive Economic Model combines public strategic resources, a plural economy, redistribution and industrialisation with plurinational identity, indigenous autonomy and import substitution. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "costa-rica-arias-2006",
+    "name": "Costa Rica — second Arias government",
+    "category": "Government · programme assessment",
+    "description": "2006–2010: Trade-open social democracy with private investment, education and social protection. Advocates disarmament, peace diplomacy and secular reform without confusing proposals with accomplished constitutional change. Historical assessment; does not represent the current situation or public opinion."
+  },
+  {
+    "id": "finlandia-marin-programa-2019",
+    "name": "Finland — Marin’s 2019 programme",
+    "category": "Government · programme assessment",
+    "description": "2019–2023: Green social democracy with universal services, equality, migrant reception and carbon neutrality. Combines research, a mixed economy and national defence with European cooperation. Historical assessment; does not represent the current situation or public opinion."
   }
 ]

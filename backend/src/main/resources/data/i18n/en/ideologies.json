@@ -1873,5 +1873,75 @@
     "category": "Left",
     "description": "The XXII Government programme’s social-democratic variant: public services and reduced inequality within a mixed economy, decentralisation, integrated migrant reception, civil rights and energy and digital transitions.",
     "phrase": "I want public services and equal rights, with an open mixed economy prepared for the ecological transition."
+  },
+  {
+    "id": "liberalismo-reconstrucao-sirleaf",
+    "name": "Reconstruction liberalism — Sirleaf",
+    "category": "Center",
+    "description": "Postwar liberal reconstruction: constitutional rights, private investment, state reform, women’s inclusion and international cooperation for peace.",
+    "phrase": "I want to rebuild democracy and essential services through equal rights, investment and peace."
+  },
+  {
+    "id": "nkrumahismo",
+    "name": "Nkrumahism",
+    "category": "Radical Left",
+    "description": "Pan-African socialism with planned industrialisation, public ownership and continental union. In 1964–1966 Ghana it coexisted with one-party rule and repression of opposition.",
+    "phrase": "I want a united, sovereign Africa with socialist industrialisation and emancipation from colonialism."
+  },
+  {
+    "id": "reformismo-pakatan-harapan-2018",
+    "name": "Pakatan Harapan reformism — 2018",
+    "category": "Center",
+    "description": "Coalition reformism with corruption controls, state autonomy, a mixed economy and modernisation. Retains bumiputera preferences and Islam’s constitutional status.",
+    "phrase": "I want institutional reform and corruption controls alongside development and regional autonomy."
+  },
+  {
+    "id": "estado-social-islamico-naya-pakistan",
+    "name": "Islamic welfare state — Naya Pakistan",
+    "category": "Center",
+    "description": "A Medina-inspired welfare-state project with corruption controls, federal decentralisation, social services, entrepreneurship and independent foreign policy.",
+    "phrase": "I want a just Medina-inspired welfare state with accountable institutions and national autonomy."
+  },
+  {
+    "id": "desenvolvimentismo-pancasila-jokowi",
+    "name": "Pancasila developmentalism — Jokowi",
+    "category": "Center",
+    "description": "Infrastructure, industrial transformation and human-capital developmentalism within Pancasila. Combines public enterprises and private investment, recognised religious pluralism and strong state security.",
+    "phrase": "I want industrial development and infrastructure with national unity, investment and social protection."
+  },
+  {
+    "id": "reformismo-democratico-sunshine",
+    "name": "Democratic reformism — Sunshine policy",
+    "category": "Center",
+    "description": "Democratic market reformism with social rights, economic opening and dialogue with the North. Sunshine policy combined nonprovocation and cooperation with defensive deterrence.",
+    "phrase": "I want democracy and an open economy with social rights and peaceful Korean reconciliation."
+  },
+  {
+    "id": "obradorismo-programa-2019",
+    "name": "Obradorism — 2019 programme",
+    "category": "Left",
+    "description": "The Fourth Transformation’s post-neoliberal project: public energy enterprises, redistribution, administrative austerity and sovereignty. The plan declares nondiscrimination and noninterventionist foreign policy.",
+    "phrase": "I want to restore the state’s social capacity, fight corruption and develop the country with sovereignty."
+  },
+  {
+    "id": "socialismo-comunitario-produtivo-arce",
+    "name": "Productive communitarian socialism — Arce",
+    "category": "Left",
+    "description": "The Social Communitarian Productive Economic Model combines public strategic resources, a plural economy, redistribution and industrialisation with plurinational identity, indigenous autonomy and import substitution.",
+    "phrase": "I want public strategic resources, industrialisation and redistribution with respect for plurinational diversity."
+  },
+  {
+    "id": "social-democracia-aberta-arias",
+    "name": "Open social democracy — Arias",
+    "category": "Center",
+    "description": "Trade-open social democracy with private investment, education and social protection. Advocates disarmament, peace diplomacy and secular reform without confusing proposals with accomplished constitutional change.",
+    "phrase": "I want social services and economic opportunity with open trade and peace diplomacy."
+  },
+  {
+    "id": "social-democracia-ecologica-marin",
+    "name": "Green social democracy — Marin",
+    "category": "Left",
+    "description": "Green social democracy with universal services, equality, migrant reception and carbon neutrality. Combines research, a mixed economy and national defence with European cooperation.",
+    "phrase": "I want universal services, equality and a just green transition supported by science and democracy."
   }
 ]

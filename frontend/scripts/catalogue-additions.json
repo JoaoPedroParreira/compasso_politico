@@ -9,7 +9,17 @@
     "social-democracia-bachelet",
     "socialismo-democratico-soares",
     "cavaquismo",
-    "social-democracia-costa"
+    "social-democracia-costa",
+    "liberalismo-reconstrucao-sirleaf",
+    "nkrumahismo",
+    "reformismo-pakatan-harapan-2018",
+    "estado-social-islamico-naya-pakistan",
+    "desenvolvimentismo-pancasila-jokowi",
+    "reformismo-democratico-sunshine",
+    "obradorismo-programa-2019",
+    "socialismo-comunitario-produtivo-arce",
+    "social-democracia-aberta-arias",
+    "social-democracia-ecologica-marin"
   ],
   "countries": [
     "india-nehru",
@@ -21,7 +31,17 @@
     "chile-bachelet-ii",
     "portugal-soares-i",
     "portugal-cavaco-xii",
-    "portugal-costa-xxii"
+    "portugal-costa-xxii",
+    "liberia-sirleaf-2006",
+    "gana-nkrumah-partido-unico",
+    "malasia-mahathir-2018",
+    "paquistao-imran-2018",
+    "indonesia-jokowi-segundo-mandato",
+    "coreia-sul-kim-1998",
+    "mexico-amlo-programa-2019",
+    "bolivia-arce-pdes-2021",
+    "costa-rica-arias-2006",
+    "finlandia-marin-programa-2019"
   ],
   "personalities": [
     "jawaharlal-nehru",
@@ -33,6 +53,16 @@
     "michelle-bachelet",
     "mario-soares",
     "cavaco-silva",
-    "antonio-costa"
+    "antonio-costa",
+    "ellen-johnson-sirleaf",
+    "kwame-nkrumah",
+    "mahathir-mohamad",
+    "imran-khan",
+    "joko-widodo",
+    "kim-dae-jung",
+    "andres-manuel-lopez-obrador",
+    "luis-arce",
+    "oscar-arias",
+    "sanna-marin"
   ]
 }

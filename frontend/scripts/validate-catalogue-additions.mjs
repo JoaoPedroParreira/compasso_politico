@@ -10,12 +10,14 @@ const registry=read('frontend/scripts/catalogue-additions.json');
 const evidence=read('frontend/scripts/profile-evidence.json');
 const kinds={ideologies:['ideology-profiles.json','ideologyId'],personalities:['personality-profiles.json','personalityId'],countries:['countries-profiles.json','countryId']};
 const report={checked:0,axes:0,images:0,counts:{},comparisons:[]};
+const expected=Number(process.argv.find(a=>a.startsWith('--expected='))?.split('=')[1]||10);
+if(!Number.isInteger(expected)||expected<1)throw Error('Invalid expected additions');
 for(const [kind,[file,key]] of Object.entries(kinds)) {
   const metadata=read(`backend/src/main/resources/data/${kind}.json`);
   const translations=read(`backend/src/main/resources/data/i18n/en/${kind}.json`);
   const profiles=read(`backend/src/main/resources/data/${file}`);
   const vectors=new Map(profiles.map(p=>[p[key],p.vector]));
-  if(registry[kind].length!==10||new Set(registry[kind]).size!==10)throw Error(`${kind}: expected 10 unique additions`);
+  if(registry[kind].length!==expected||new Set(registry[kind]).size!==expected)throw Error(`${kind}: expected ${expected} unique additions`);
   report.counts[kind]={total:metadata.length,new:registry[kind].length};
   for(const id of registry[kind]) {
     const m=metadata.find(m=>m.id===id),r=evidence[id],v=vectors.get(id);
@@ -27,6 +29,7 @@ for(const [kind,[file,key]] of Object.entries(kinds)) {
     }
     const path=m.imagePath||m.flagPath;
     if(path) {
+      if(!existsSync(join(root,'frontend/dist',path)))throw Error(`${id}: missing production image`);
       const image=await sharp(join(root,'frontend/public',path)).metadata();
       if(!image.width||!image.height||!r.image?.artist||!r.image?.license||!r.image?.source.startsWith('https://commons.wikimedia.org/'))throw Error(`${id}: invalid image provenance`);
       report.images++;

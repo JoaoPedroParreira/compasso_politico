@@ -3365,5 +3365,115 @@
     "countryId": "portugal-costa-xxii",
     "personalityId": "antonio-costa",
     "religions": []
+  },
+  {
+    "id": "liberalismo-reconstrucao-sirleaf",
+    "name": "Liberalismo de reconstrução — Sirleaf",
+    "category": "Centro",
+    "description": "Reconstrução liberal após a guerra civil: direitos constitucionais, investimento privado, reforma do Estado, inclusão das mulheres e cooperação internacional para a paz.",
+    "phrase": "Quero reconstruir a democracia e os serviços essenciais, com direitos iguais, investimento e paz.",
+    "vector": null,
+    "countryId": "liberia-sirleaf-2006",
+    "personalityId": "ellen-johnson-sirleaf",
+    "religions": []
+  },
+  {
+    "id": "nkrumahismo",
+    "name": "Nkrumahismo",
+    "category": "Esquerda Radical",
+    "description": "Socialismo pan-africano com industrialização planeada, propriedade pública e união continental. No Gana de 1964–1966, coexistiu com partido único e repressão da oposição.",
+    "phrase": "Quero uma África unida e soberana, com industrialização socialista e emancipação do colonialismo.",
+    "vector": null,
+    "countryId": "gana-nkrumah-partido-unico",
+    "personalityId": "kwame-nkrumah",
+    "religions": []
+  },
+  {
+    "id": "reformismo-pakatan-harapan-2018",
+    "name": "Reformismo do Pakatan Harapan — 2018",
+    "category": "Centro",
+    "description": "Reformismo de coligação com controlo da corrupção, autonomia estadual, economia mista e modernização. Conserva privilégios bumiputera e o estatuto constitucional do Islão.",
+    "phrase": "Quero reformar as instituições e combater a corrupção, com desenvolvimento e autonomia regional.",
+    "vector": null,
+    "countryId": "malasia-mahathir-2018",
+    "personalityId": "mahathir-mohamad",
+    "religions": []
+  },
+  {
+    "id": "estado-social-islamico-naya-pakistan",
+    "name": "Estado social islâmico — Naya Pakistan",
+    "category": "Centro",
+    "description": "Projeto de Estado social inspirado em Medina, com combate à corrupção, descentralização federal, serviços sociais, iniciativa empresarial e política externa independente.",
+    "phrase": "Quero um Estado social justo, inspirado em Medina, com instituições responsáveis e autonomia nacional.",
+    "vector": null,
+    "countryId": "paquistao-imran-2018",
+    "personalityId": "imran-khan",
+    "religions": []
+  },
+  {
+    "id": "desenvolvimentismo-pancasila-jokowi",
+    "name": "Desenvolvimentismo da Pancasila — Jokowi",
+    "category": "Centro",
+    "description": "Desenvolvimentismo com infraestrutura, transformação industrial e capital humano, dentro da Pancasila. Combina empresas públicas e investimento privado, pluralismo religioso reconhecido e forte segurança estatal.",
+    "phrase": "Quero desenvolvimento industrial e infraestrutura, com unidade nacional, investimento e proteção social.",
+    "vector": null,
+    "countryId": "indonesia-jokowi-segundo-mandato",
+    "personalityId": "joko-widodo",
+    "religions": []
+  },
+  {
+    "id": "reformismo-democratico-sunshine",
+    "name": "Reformismo democrático — política Sunshine",
+    "category": "Centro",
+    "description": "Reformismo democrático de mercado com direitos sociais, abertura económica e diálogo com o Norte. A política Sunshine combinava não provocação e cooperação com dissuasão defensiva.",
+    "phrase": "Quero democracia e uma economia aberta, com direitos sociais e reconciliação pacífica entre as Coreias.",
+    "vector": null,
+    "countryId": "coreia-sul-kim-1998",
+    "personalityId": "kim-dae-jung",
+    "religions": []
+  },
+  {
+    "id": "obradorismo-programa-2019",
+    "name": "Obradorismo — programa de 2019",
+    "category": "Esquerda",
+    "description": "Projeto pós-neoliberal da Quarta Transformação: empresas energéticas públicas, redistribuição, austeridade administrativa e soberania. O plano declara não discriminação e política externa não intervencionista.",
+    "phrase": "Quero recuperar a capacidade social do Estado, combater a corrupção e desenvolver o país com soberania.",
+    "vector": null,
+    "countryId": "mexico-amlo-programa-2019",
+    "personalityId": "andres-manuel-lopez-obrador",
+    "religions": []
+  },
+  {
+    "id": "socialismo-comunitario-produtivo-arce",
+    "name": "Socialismo comunitário produtivo — Arce",
+    "category": "Esquerda",
+    "description": "Modelo Económico Social Comunitário Produtivo com recursos estratégicos públicos, economia plural, redistribuição e industrialização. Articula plurinacionalidade, autonomias indígenas e substituição de importações.",
+    "phrase": "Quero recursos estratégicos públicos, industrialização e redistribuição, respeitando a diversidade plurinacional.",
+    "vector": null,
+    "countryId": "bolivia-arce-pdes-2021",
+    "personalityId": "luis-arce",
+    "religions": []
+  },
+  {
+    "id": "social-democracia-aberta-arias",
+    "name": "Social-democracia aberta — Arias",
+    "category": "Centro",
+    "description": "Social-democracia aberta ao comércio, com investimento privado, educação e proteção social. Defende desarmamento, diplomacia de paz e reforma laica, sem confundir proposta com mudança constitucional concretizada.",
+    "phrase": "Quero serviços sociais e oportunidades económicas, com comércio aberto e diplomacia de paz.",
+    "vector": null,
+    "countryId": "costa-rica-arias-2006",
+    "personalityId": "oscar-arias",
+    "religions": []
+  },
+  {
+    "id": "social-democracia-ecologica-marin",
+    "name": "Social-democracia ecológica — Marin",
+    "category": "Esquerda",
+    "description": "Social-democracia ecológica com serviços universais, igualdade, acolhimento de migrantes e neutralidade carbónica. Combina investigação, economia mista e defesa nacional com cooperação europeia.",
+    "phrase": "Quero serviços universais, igualdade e uma transição ecológica justa, apoiada pela ciência e pela democracia.",
+    "vector": null,
+    "countryId": "finlandia-marin-programa-2019",
+    "personalityId": "sanna-marin",
+    "religions": []
   }
 ]

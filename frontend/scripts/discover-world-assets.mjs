@@ -1,0 +1,11 @@
+import {writeFileSync} from 'node:fs';
+const people=[['ellen-johnson-sirleaf','Ellen Johnson Sirleaf'],['kwame-nkrumah','Kwame Nkrumah'],['mahathir-mohamad','Mahathir Mohamad'],['imran-khan','Imran Khan'],['joko-widodo','Joko Widodo'],['kim-dae-jung','Kim Dae-jung'],['andres-manuel-lopez-obrador','Andrés Manuel López Obrador'],['luis-arce','Luis Arce'],['oscar-arias','Óscar Arias'],['sanna-marin','Sanna Marin']];
+const headers={'User-Agent':'CompassoPoliticoLocalResearch/1.0'};
+const r=await fetch('https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageimages&piprop=original&titles='+encodeURIComponent(people.map(p=>p[1]).join('|')),{headers});if(!r.ok)throw Error(r.status);
+const data=await r.json();const pages=Object.values(data.query.pages);
+const files=people.map(([id,name])=>{const page=pages.find(p=>p.title===name);if(!page?.original)throw Error(name);return [id,'File:'+decodeURIComponent(new URL(page.original.source).pathname.split('/').at(-1)),name];});
+for(const [id,name]of [['liberia','Liberia'],['malaysia','Malaysia'],['pakistan','Pakistan'],['indonesia','Indonesia'],['south-korea','South Korea'],['mexico','Mexico'],['bolivia','Bolivia'],['costa-rica','Costa Rica'],['finland','Finland']])files.push(['flag-'+id,'File:Flag of '+name+'.svg']);
+const search=await fetch('https://commons.wikimedia.org/w/api.php?action=query&format=json&list=search&srnamespace=6&srsearch='+encodeURIComponent('"Flag of Ghana" "1964"')+'&srlimit=5',{headers});console.log('Historical Ghana flag candidates',JSON.stringify((await search.json()).query.search.map(s=>s.title)));
+const meta=await fetch('https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url%7Cextmetadata%7Csize&titles='+encodeURIComponent(files.map(f=>f[1]).join('|')),{headers});const metadata=await meta.json();writeFileSync('.local-runtime/world-batch-assets-candidates.json',JSON.stringify({files,metadata},null,2));
+console.log(files.map(f=>f[0]+': '+f[1]).join('\n'));
+for(const p of Object.values(metadata.query.pages)){const i=p.imageinfo?.[0];console.log(p.title,i?`${i.extmetadata?.LicenseShortName?.value} ${i.width}x${i.height} ${i.extmetadata?.Artist?.value?.replace(/<[^>]*>/g,'').slice(0,100)}`:'MISSING');}

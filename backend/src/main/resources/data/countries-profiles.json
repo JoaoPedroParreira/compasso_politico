@@ -3721,5 +3721,175 @@
       "moral": 90,
       "tecnologia": 70
     }
+  },
+  {
+    "countryId": "liberia-sirleaf-2006",
+    "vector": {
+      "estrutura": 50,
+      "representacao": 90,
+      "poder": 60,
+      "imigracao": 40,
+      "diplomacia": 40,
+      "intervencao": 80,
+      "economia": 40,
+      "controle": 50,
+      "comercio": 20,
+      "religiao": 70,
+      "moral": 80,
+      "tecnologia": 70
+    }
+  },
+  {
+    "countryId": "gana-nkrumah-partido-unico",
+    "vector": {
+      "estrutura": 20,
+      "representacao": 20,
+      "poder": 80,
+      "imigracao": 50,
+      "diplomacia": 60,
+      "intervencao": 30,
+      "economia": 80,
+      "controle": 90,
+      "comercio": 70,
+      "religiao": 70,
+      "moral": 60,
+      "tecnologia": 90
+    }
+  },
+  {
+    "countryId": "malasia-mahathir-2018",
+    "vector": {
+      "estrutura": 80,
+      "representacao": 80,
+      "poder": 50,
+      "imigracao": 50,
+      "diplomacia": 60,
+      "intervencao": 60,
+      "economia": 50,
+      "controle": 50,
+      "comercio": 40,
+      "religiao": 30,
+      "moral": 60,
+      "tecnologia": 80
+    }
+  },
+  {
+    "countryId": "paquistao-imran-2018",
+    "vector": {
+      "estrutura": 90,
+      "representacao": 80,
+      "poder": 50,
+      "imigracao": 40,
+      "diplomacia": 70,
+      "intervencao": 80,
+      "economia": 50,
+      "controle": 50,
+      "comercio": 30,
+      "religiao": 20,
+      "moral": 60,
+      "tecnologia": 80
+    }
+  },
+  {
+    "countryId": "indonesia-jokowi-segundo-mandato",
+    "vector": {
+      "estrutura": 40,
+      "representacao": 70,
+      "poder": 70,
+      "imigracao": 50,
+      "diplomacia": 70,
+      "intervencao": 70,
+      "economia": 50,
+      "controle": 70,
+      "comercio": 50,
+      "religiao": 30,
+      "moral": 60,
+      "tecnologia": 90
+    }
+  },
+  {
+    "countryId": "coreia-sul-kim-1998",
+    "vector": {
+      "estrutura": 60,
+      "representacao": 90,
+      "poder": 30,
+      "imigracao": 40,
+      "diplomacia": 40,
+      "intervencao": 90,
+      "economia": 40,
+      "controle": 30,
+      "comercio": 20,
+      "religiao": 70,
+      "moral": 70,
+      "tecnologia": 90
+    }
+  },
+  {
+    "countryId": "mexico-amlo-programa-2019",
+    "vector": {
+      "estrutura": 70,
+      "representacao": 80,
+      "poder": 60,
+      "imigracao": 20,
+      "diplomacia": 50,
+      "intervencao": 90,
+      "economia": 70,
+      "controle": 70,
+      "comercio": 60,
+      "religiao": 80,
+      "moral": 80,
+      "tecnologia": 70
+    }
+  },
+  {
+    "countryId": "bolivia-arce-pdes-2021",
+    "vector": {
+      "estrutura": 60,
+      "representacao": 80,
+      "poder": 60,
+      "imigracao": 20,
+      "diplomacia": 50,
+      "intervencao": 40,
+      "economia": 80,
+      "controle": 90,
+      "comercio": 80,
+      "religiao": 70,
+      "moral": 70,
+      "tecnologia": 80
+    }
+  },
+  {
+    "countryId": "costa-rica-arias-2006",
+    "vector": {
+      "estrutura": 40,
+      "representacao": 90,
+      "poder": 40,
+      "imigracao": 30,
+      "diplomacia": 10,
+      "intervencao": 90,
+      "economia": 40,
+      "controle": 50,
+      "comercio": 10,
+      "religiao": 30,
+      "moral": 70,
+      "tecnologia": 60
+    }
+  },
+  {
+    "countryId": "finlandia-marin-programa-2019",
+    "vector": {
+      "estrutura": 60,
+      "representacao": 90,
+      "poder": 40,
+      "imigracao": 20,
+      "diplomacia": 60,
+      "intervencao": 80,
+      "economia": 60,
+      "controle": 60,
+      "comercio": 20,
+      "religiao": 50,
+      "moral": 90,
+      "tecnologia": 60
+    }
   }
 ]
